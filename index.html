@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mimi — ส่งภาพจากกล้องขึ้น Google Drive ระหว่างงาน</title>
+<meta name="description" content="แอป Android ที่รับภาพจากกล้องผ่าน Wi-Fi หรือ USB แล้วอัปโหลดขึ้น Google Drive ของคุณเองระหว่างงาน">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    max-width: 46rem; margin: 0 auto; padding: 3rem 1.25rem 5rem;
+    font: 16px/1.75 "IBM Plex Sans Thai", "Noto Sans Thai", -apple-system, system-ui, sans-serif;
+    color: #1a1d23; background: #fff;
+  }
+  @media (prefers-color-scheme: dark) { body { color: #e6e9ef; background: #14171c; } }
+
+  header { margin-bottom: 2.5rem; }
+  .logo { font-size: 2.4rem; font-weight: 700; letter-spacing: -.02em; color: #12707e; margin: 0; }
+  @media (prefers-color-scheme: dark) { .logo { color: #34c3d6; } }
+  .tagline { font-size: 1.1rem; margin: .35rem 0 0; }
+  .sub { color: #6b7280; font-size: .95rem; }
+  @media (prefers-color-scheme: dark) { .sub { color: #9aa3b2; } }
+
+  h2 { font-size: 1.2rem; margin: 2.5rem 0 .7rem; }
+  h3 { font-size: 1rem; margin: 1.5rem 0 .4rem; }
+  ul { padding-left: 1.25rem; }
+  li { margin: .4rem 0; }
+
+  .flow {
+    display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem;
+    padding: 1.1rem 1.25rem; margin: 1.5rem 0;
+    border: 1px solid #d8dce3; border-radius: 12px;
+    font-size: .95rem;
+  }
+  @media (prefers-color-scheme: dark) { .flow { border-color: #2b3140; } }
+  .flow b { font-weight: 600; }
+  .arrow { color: #12707e; font-weight: 700; }
+  @media (prefers-color-scheme: dark) { .arrow { color: #34c3d6; } }
+
+  .promise {
+    border-left: 3px solid #12707e; padding: .1rem 0 .1rem 1rem; margin: 1.25rem 0;
+  }
+  @media (prefers-color-scheme: dark) { .promise { border-left-color: #34c3d6; } }
+
+  .box {
+    border: 1px solid #d8dce3; border-radius: 12px; padding: 1.25rem; margin: 1.5rem 0;
+  }
+  @media (prefers-color-scheme: dark) { .box { border-color: #2b3140; } }
+
+  code { font-family: ui-monospace, monospace; font-size: .9em; }
+  a { color: #12707e; }
+  @media (prefers-color-scheme: dark) { a { color: #34c3d6; } }
+  hr { border: 0; border-top: 1px solid #d8dce3; margin: 3.5rem 0; }
+  @media (prefers-color-scheme: dark) { hr { border-top-color: #2b3140; } }
+
+  .fill { background: #fff3cd; color: #6b4c00; padding: .1em .35em; border-radius: 3px; }
+  @media (prefers-color-scheme: dark) { .fill { background: #4a3a00; color: #ffe08a; } }
+  footer { margin-top: 3rem; font-size: .9rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="logo">Mimi</p>
+  <p class="tagline">ส่งภาพจากกล้องขึ้น Google Drive ให้แขกดาวน์โหลดได้ ตั้งแต่งานยังไม่เลิก</p>
+</header>
+
+<p>
+Mimi เป็นแอปบนโทรศัพท์ Android สำหรับช่างภาพที่ต้องส่งภาพให้คนดูระหว่างงาน
+กล้องส่งภาพเข้าโทรศัพท์ผ่าน Wi-Fi หรือสาย USB แล้วแอปอัปโหลดขึ้น
+<strong>Google Drive ของคุณเอง</strong> ต่อให้ทันที
+</p>
+
+<div class="flow">
+  <b>กล้องของคุณ</b> <span class="arrow">→</span>
+  <b>โทรศัพท์ (Mimi)</b> <span class="arrow">→</span>
+  <b>Google Drive ของคุณ</b>
+</div>
+
+<h2>สิ่งที่แอปสัญญา</h2>
+
+<div class="promise">
+  <strong>ไม่แตะการ์ดในกล้องเลย</strong><br>
+  <span class="sub">อ่านอย่างเดียว ไม่ลบ ไม่ย้าย ไม่ฟอร์แมต และจำเองว่าดึงรูปไหนไปแล้วเพื่อไม่ดึงซ้ำ ต้นฉบับของคุณอยู่บนการ์ดครบเสมอ</span>
+</div>
+
+<div class="promise">
+  <strong>เห็นเฉพาะไฟล์ของตัวเองใน Drive</strong><br>
+  <span class="sub">ขอสิทธิ์แบบแคบที่สุดเท่าที่ Google มีให้ (<code>drive.file</code>) มองไม่เห็นไฟล์อื่นในไดรฟ์ของคุณ และไม่มีคำสั่งลบไฟล์บน Drive อยู่ในโค้ดเลย</span>
+</div>
+
+<div class="promise">
+  <strong>ไม่มีเซิร์ฟเวอร์ตรงกลาง</strong><br>
+  <span class="sub">ภาพเดินทางจากกล้องของคุณไปยังไดรฟ์ของคุณโดยตรง เราไม่เก็บสำเนา ไม่มีระบบเก็บสถิติ ไม่มีโฆษณา ไม่มีตัวติดตาม</span>
+</div>
+
+<div class="promise">
+  <strong>ไม่บอกว่าสำเร็จถ้ายังไม่สำเร็จ</strong><br>
+  <span class="sub">ทุกรูปมีสถานะของตัวเองบนหน้าจอ และรูปที่ถูกข้ามจะบอกเหตุผลเสมอ ไม่หายเงียบ</span>
+</div>
+
+<h2>ทำอะไรได้บ้าง</h2>
+<ul>
+  <li><strong>แยกตามงาน</strong> — แต่ละงานมีโฟลเดอร์ปลายทาง ตัวกรองไฟล์ และการตั้งค่าของตัวเอง</li>
+  <li><strong>เลือกโฟลเดอร์ปลายทางเองได้</strong> — ให้แอปสร้างให้ หรือชี้ไปยังโฟลเดอร์เดิมที่คุณจัดไว้แล้วก็ได้</li>
+  <li><strong>ส่งอัตโนมัติหรือสั่งเอง</strong> — โหมดสั่งเองให้คุณเลือกทีละรูปว่าจะส่งรูปไหนขึ้นไป</li>
+  <li><strong>รับได้ทั้ง Wi-Fi และ USB</strong> — FTP สำหรับกล้องที่ส่งไร้สายได้ หรือเสียบสายตรงผ่าน USB</li>
+  <li><strong>ส่งต่อได้เมื่อเน็ตหลุด</strong> — อัปโหลดแบบต่อจากจุดเดิม ไม่เริ่มใหม่ทั้งไฟล์ และกู้คืนคิวเองหลังแอปถูกปิด</li>
+  <li><strong>จัดการพื้นที่เครื่อง</strong> — ลบไฟล์ที่ขึ้นไดรฟ์แล้วอัตโนมัติ พร้อมปุ่มล้างเองเมื่อพื้นที่ใกล้เต็ม</li>
+</ul>
+
+<h2>ต้องมีอะไรบ้าง</h2>
+<ul>
+  <li>โทรศัพท์ <strong>Android 10 ขึ้นไป</strong></li>
+  <li>บัญชี Google สำหรับเก็บภาพ</li>
+  <li>กล้องที่ส่งภาพผ่าน <strong>FTP โดยตั้งหมายเลขพอร์ตเองได้</strong> (กล้องที่บังคับพอร์ต 21 ใช้ไม่ได้ เพราะ Android ไม่อนุญาตให้แอปเปิดพอร์ตต่ำกว่า 1024) หรือกล้องที่ต่อ <strong>USB</strong> แบบ MTP/PTP ได้</li>
+</ul>
+<p class="sub">
+ทดสอบกับ Canon EOS 5D แล้ว กล้องยี่ห้ออื่นที่รองรับมาตรฐานเดียวกันควรใช้ได้ แต่ยังไม่ได้ทดสอบทุกรุ่น
+</p>
+
+<h2>ดาวน์โหลด</h2>
+<div class="box">
+  <p style="margin-top:0">
+    <a href="#" class="fill"><a href="https://github.com/mimiapp-photo/mimiapp-photo.github.io/releases/latest/download/Mimi.apk">ดาวน์โหลด Mimi (.apk)</a></a>
+  </p>
+  <h3>วิธีติดตั้ง</h3>
+  <ol>
+    <li>ดาวน์โหลดไฟล์ APK ลงโทรศัพท์</li>
+    <li>เปิดไฟล์ — Android จะถามว่าอนุญาตให้ติดตั้งจากแหล่งนี้หรือไม่ ให้กดอนุญาต</li>
+    <li>เปิดแอปแล้วเลือกบัญชี Google ที่จะใช้เก็บภาพ</li>
+    <li>สร้างงานแรก แล้วเปิดช่องรับภาพ — แอปจะแสดงค่าที่ต้องกรอกในเมนู FTP ของกล้องให้</li>
+  </ol>
+  <p class="sub" style="margin-bottom:0">
+    แอปนี้แจกเป็นไฟล์โดยตรง ไม่ได้อยู่บน Google Play จึงไม่มีการอัปเดตอัตโนมัติ
+  </p>
+</div>
+
+<h2>ความเป็นส่วนตัว</h2>
+<p>
+อ่านรายละเอียดได้ที่ <a href="privacy-policy.html">นโยบายความเป็นส่วนตัว</a>
+สรุปสั้นๆ คือ ภาพของคุณไปที่ Drive ของคุณเท่านั้น และเราไม่ได้เก็บอะไรไว้เลย
+</p>
+
+<footer class="sub">
+  ผู้พัฒนา Mimi Application ·
+  ติดต่อ <a href="mailto:mimi.photoapp@gmail.com">mimi.photoapp@gmail.com</a>
+</footer>
+
+<hr>
+
+<header>
+  <p class="logo">Mimi</p>
+  <p class="tagline">Get photographs from your camera into Google Drive before the event ends</p>
+</header>
+
+<p>
+Mimi is an Android app for photographers who need to share images while they are still working.
+The camera sends photographs to the phone over Wi-Fi or a USB cable, and the app uploads them
+straight on to <strong>your own Google Drive</strong>.
+</p>
+
+<div class="flow">
+  <b>Your camera</b> <span class="arrow">→</span>
+  <b>Your phone (Mimi)</b> <span class="arrow">→</span>
+  <b>Your Google Drive</b>
+</div>
+
+<h2>What the app promises</h2>
+
+<div class="promise">
+  <strong>It never touches your camera card</strong><br>
+  <span class="sub">Read-only. It never deletes, moves, or formats anything, and it remembers which frames it has already taken so it does not fetch them twice. Your originals always stay on the card.</span>
+</div>
+
+<div class="promise">
+  <strong>It only ever sees its own files in Drive</strong><br>
+  <span class="sub">It requests the narrowest scope Google offers (<code>drive.file</code>), cannot see anything else in your Drive, and contains no code capable of deleting a file from Drive.</span>
+</div>
+
+<div class="promise">
+  <strong>There is no server in the middle</strong><br>
+  <span class="sub">Photographs travel from your camera to your Drive. We keep no copies, and the app has no analytics, advertising, or tracking of any kind.</span>
+</div>
+
+<div class="promise">
+  <strong>It does not claim success it has not earned</strong><br>
+  <span class="sub">Every frame carries its own status on screen, and any photo that is skipped says why. Nothing disappears quietly.</span>
+</div>
+
+<h2>What it does</h2>
+<ul>
+  <li><strong>Work is organised by job</strong> — each job has its own destination folder, file filter, and settings.</li>
+  <li><strong>Choose your own destination folder</strong> — let the app create one, or point it at a folder you already organised yourself.</li>
+  <li><strong>Automatic or manual upload</strong> — manual mode lets you pick which frames go up.</li>
+  <li><strong>Wi-Fi and USB</strong> — an FTP server for cameras that transmit wirelessly, or a direct USB connection.</li>
+  <li><strong>Survives a dropped connection</strong> — uploads resume from where they stopped rather than starting over, and the queue is recovered if the app is closed.</li>
+  <li><strong>Manages device storage</strong> — clears files once they are safely on Drive, with a manual clear when space runs low.</li>
+</ul>
+
+<h2>Requirements</h2>
+<ul>
+  <li>A phone running <strong>Android 10 or newer</strong></li>
+  <li>A Google account to store the photographs</li>
+  <li>A camera that can send over <strong>FTP with a configurable port number</strong> (cameras hard-wired to port 21 will not work, as Android does not let apps open ports below 1024), or one that connects over <strong>USB</strong> using MTP/PTP</li>
+</ul>
+<p class="sub">
+Tested with a Canon EOS 5D. Other makes supporting the same standards should work, though not every model has been verified.
+</p>
+
+<h2>Download</h2>
+<div class="box">
+  <p style="margin-top:0"><a href="#" class="fill"><a href="https://github.com/mimiapp-photo/mimiapp-photo.github.io/releases/latest/download/Mimi.apk">ดาวน์โหลด Mimi (.apk)</a></a></p>
+  <p class="sub" style="margin-bottom:0">
+    Distributed as a direct download rather than through Google Play, so your phone will ask you to
+    permit installation from this source, and updates are not automatic.
+  </p>
+</div>
+
+<h2>Privacy</h2>
+<p>
+Full details are in the <a href="privacy-policy.html">privacy policy</a>. In short: your photographs
+go to your Drive and nowhere else, and we keep nothing.
+</p>
+
+<footer class="sub">
+  Developer Mimi Application ·
+  Contact <a href="mailto:mimi.photoapp@gmail.com">mimi.photoapp@gmail.com</a>
+</footer>
+
+</body>
+</html>
